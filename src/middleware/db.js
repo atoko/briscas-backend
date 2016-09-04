@@ -1,3 +1,4 @@
+//initialize massive
 
 let injectDb = function(req, res, next) {
 	req.db = {};
