@@ -722,4 +722,5 @@ $$ LANGUAGE PLPGSQL;
 
 select 'functions installed' as result;
 
+set search_path=public;
 COMMIT;
