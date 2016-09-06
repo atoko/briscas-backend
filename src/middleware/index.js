@@ -1,3 +1,3 @@
 import db from "./db";
-
-export { db };
+import session from "./session";
+export { db, session };

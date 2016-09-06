@@ -1,3 +1,3 @@
-import createNew from "./createNew";
-
-export { createNew };
+import game from "./game";
+import auth from "./auth";
+export { game, auth };

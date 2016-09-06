@@ -5,7 +5,17 @@ var supertest = require("supertest")
 /*
 exports.list_queryable = function(done){
 	supertest(app.default)
-	.get("/new")
+	.get("/game/list")
+	.expect(200)
+	.end(function(err, response){
+		assert.ok(!err);
+		assert.ok(typeof JSON.parse(response.text) === "object");
+		return done();
+	});
+};
+exports.self_returns_game = function(done){
+	supertest(app.default)
+	.get("/game/self")
 	.expect(200)
 	.end(function(err, response){
 		assert.ok(!err);
@@ -16,22 +26,11 @@ exports.list_queryable = function(done){
 */
 exports.new_returns_id = function(done){
 	supertest(app.default)
-	.get("/new")
+	.get("/game/new")
 	.expect(200)
 	.end(function(err, response){
 		assert.ok(!err);
 		assert.ok(typeof response.text === "string");
-		return done();
-	});
-};
-
-exports.self_returns_game = function(done){
-	supertest(app.default)
-	.get("/new")
-	.expect(200)
-	.end(function(err, response){
-		assert.ok(!err);
-		assert.ok(typeof JSON.parse(response.text) === "object");
 		return done();
 	});
 };
