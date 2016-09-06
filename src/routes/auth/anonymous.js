@@ -2,6 +2,8 @@ let anonymous = function(req, res, next) {
 	let anon = req.sessionID.slice(0, 8);
 
 	req.db.membership.register(anon, anon, anon, function(err, row) {
+		console.log(err, row);
+		console.log("********************************");
 		if (err) {
 			res.status(403).json(err);
 			res.send();
