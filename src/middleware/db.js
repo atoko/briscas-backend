@@ -2,7 +2,7 @@ import { database } from "../configure";
 import pg from "pg";
 import massive from "massive";
 
-pg.defaults.ssl = true;
+//pg.defaults.ssl = true;
 
 //Initialize schema if not exists
 {

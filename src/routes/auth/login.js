@@ -10,12 +10,12 @@ let login = function(req, res, next) {
 
 		req.db.membership.authenticate(username, password, "local",	"127.0.0.1",
 			function(err, row) {
-				let response = row[0].authenticate;
-				if (err || response.success === false) {
+				if (err || row[0].authenticate.success === false) {
 					res.status(403).json(response);
 					res.send();
 				}
-				else {
+				else {				
+					let response = row[0].authenticate;
 					let s = req.session;
 					s.data = s.data ? s.data : {};
 					s.data["player_id"] = response.return_id;
