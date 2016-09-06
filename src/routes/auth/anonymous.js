@@ -6,20 +6,19 @@ let anonymous = function(req, res, next) {
 			res.status(403).json(err);
 			res.send();
 			return;
-		}
-		else {
+		} else {
 			let response = row[0].register;
 			if (response.success === false) {
 				res.status(403).json(response);
 				return;
 			}
-			
+
 			let s = req.session;
 			s.data = s.data ? s.data : {};
 			s.data["player_id"] = response.new_id;
-			s.save();			
+			s.save();
 			res.json(response).send();
-		}	
+		}
 	});
 };
 export default anonymous;

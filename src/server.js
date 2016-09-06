@@ -1,15 +1,23 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
-import { db, session } from "./middleware"; //, auth, logging
-import { game, auth } from "./routes"; //, turn, self
+import {
+	db,
+	session
+} from "./middleware"; //, auth, logging
+import {
+	game,
+	auth
+} from "./routes"; //, turn, self
 
 var app = express();
 app.set("port", (process.env.PORT || 5000));
 
 app.use(cookieParser("lembas"));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+	extended: false
+}));
 
 app.use(db());
 app.use(session());

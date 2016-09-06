@@ -2,7 +2,11 @@ let register = function(req, res, next) {
 	let login = req.body;
 
 	if (typeof login === "object") {
-		let {username, password, confirm} = login;
+		let {
+			username,
+			password,
+			confirm
+		} = login;
 		if (username === undefined || password === undefined || confirm === undefined) {
 			res.sendStatus(400);
 			return;
@@ -13,8 +17,7 @@ let register = function(req, res, next) {
 				res.status(403).json(err);
 				res.send();
 				return;
-			}
-			else {
+			} else {
 				let response = row[0].register;
 				if (response.success === false) {
 					res.status(403).json(response);
@@ -26,10 +29,9 @@ let register = function(req, res, next) {
 				s.data["player_id"] = response.new_id;
 				s.save();
 				res.json(response).send();
-			}	
+			}
 		});
-	}
-	else {
+	} else {
 		res.sendStatus(400);
 	}
 };
