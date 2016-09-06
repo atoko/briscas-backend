@@ -9,7 +9,7 @@ if (typeof process.env.DB_CONNECTION !== "undefined")
 }
 if (typeof process.env.SNAP_DB_PG_URL_ALT !== "undefined")
 {
-    database.connection_string = process.env.SNAP_DB_PG_URL_ALT;
+    database.connection_string = process.env.SNAP_DB_PG_URL;
 }
 
 export { database };
