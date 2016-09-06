@@ -6,14 +6,14 @@ import massive from "massive";
 
 //Initialize schema if not exists
 {
-	let db =  massive.connectSync({connectionString : database.connection_string});
-	if (typeof db.membership === "undefined") {
-		db.schema.membership(function(err) { if (err !== null) { console.log(err); }});
-	}
-	if (typeof db.session === "undefined") {
-		db.schema.session(function(err) { if (err !== null) { console.log(err); }});
-	}	
-
+	massive.connect({connectionString : database.connection_string}, function(err, db) {
+		if (typeof db.membership === "undefined") {
+			db.schema.membership(function(err) { if (err !== null) { console.log(err); }});
+		}
+		if (typeof db.session === "undefined") {
+			db.schema.session(function(err) { if (err !== null) { console.log(err); }});
+		}	
+	});
 	//version migrations?
 }
 
