@@ -9,12 +9,18 @@ let register = function(req, res, next) {
 		}
 
 		req.db.membership.register(username, password, confirm, function(err, row) {
-			if (err || row[0].register.success === false) {
-				res.status(403).json(response);
+			if (err) {
+				res.status(403).json(err);
 				res.send();
+				return;
 			}
 			else {
-				let response = row[0].register;				
+				let response = row[0].register;
+				if (response.success === false) {
+					res.status(403).json(response);
+					return;
+				}
+
 				let s = req.session;
 				s.data = s.data ? s.data : {};
 				s.data["player_id"] = response.new_id;
