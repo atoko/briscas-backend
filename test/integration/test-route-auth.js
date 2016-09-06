@@ -14,7 +14,7 @@ exports.anonymous_returns_token = function(done){
 };
 
 exports.register_returns_token = function(done){
-	let username = Date.now();
+	var username = Date.now();
 	supertest(app.default)
 	.post("/auth/register")
 	.send({username: username, password: "pass", confirm: "pass"})
@@ -27,7 +27,7 @@ exports.register_returns_token = function(done){
 };
 
 exports.register_duplicate_email = function(done){
-	let username = Date.now();
+	var username = Date.now();
 	supertest(app.default)
 	.post("/auth/register")
 	.send({username: username, password: "pass", confirm: "pass"})
@@ -46,7 +46,7 @@ exports.register_duplicate_email = function(done){
 };
 
 exports.register_no_confirm = function(done){
-	let username = Date.now();
+	var username = Date.now();
 	supertest(app.default)
 	.post("/auth/register")
 	.send({username: username, password: "pass", confirm: "p22"})
@@ -59,7 +59,7 @@ exports.register_no_confirm = function(done){
 };
 
 exports.login_valid_returns_token = function(done){
-	let username = Date.now();
+	var username = Date.now();
 	supertest(app.default)
 	.post("/auth/register")
 	.send({username: username, password: "pass", confirm: "pass"})
