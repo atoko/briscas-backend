@@ -20,7 +20,7 @@ exports.self_returns_game = function(done){
 	.expect(200)
 	.end(function(err, response){
 		assert.ok(!err);
-		let game = JSON.parse(response.text);
+		var game = JSON.parse(response.text);
 		assert.ok(game.success);
 
 		supertest(app.default)
@@ -40,7 +40,7 @@ exports.new_returns_id = function(done){
 	.expect(200)
 	.end(function(err, response){
 		assert.ok(!err);
-		let game = JSON.parse(response.text);
+		var game = JSON.parse(response.text);
 		assert.ok(game.success);
 		return done();
 	});

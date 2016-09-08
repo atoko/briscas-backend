@@ -26,6 +26,7 @@ app.use(identity());
 
 app.post("/game", game.createNew);
 //app.get("/games");
+app.all("/game/:id", game.find);
 app.all("/game/:id/*", game.find);
 app.get("/game/:id/", game.self);
 app.post("/game/:id/", game.join);
