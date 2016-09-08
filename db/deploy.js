@@ -8,6 +8,13 @@ var registry = function() {
 	var registered = [];
 	
 	return function(database) {
+		if (database === null) {
+			if (registered.length === 0) {
+				console.log("All databases deployed");
+				process.exit(0);
+			}
+			return;
+		}
 		registered.push(database);
 		console.log("Deploying database " + database);
 		return function (err) {
@@ -33,8 +40,10 @@ massive.connect({connectionString : database.connection_string}, function(err, d
 	if (typeof db.session === "undefined") {
 		db.schema.session(registry("session"));
 	}
-
-	console.log("Begin database deployment");
+	if (typeof db.brisca === "undefined") {
+		db.schema.brisca(registry("brisca"));
+	}
+	registry(null);
 });
 //version migrations?
 

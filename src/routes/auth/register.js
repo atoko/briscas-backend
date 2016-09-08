@@ -15,7 +15,7 @@ let register = function(req, res, next) {
 		req.db.membership.register(username, password, confirm, function(err, row) {
 			if (err) {
 				res.status(403).json(err);
-				res.send();
+				res.end();
 				return;
 			} else {
 				let response = row[0].register;
@@ -24,11 +24,8 @@ let register = function(req, res, next) {
 					return;
 				}
 
-				let s = req.session;
-				s.data = s.data ? s.data : {};
-				s.data["player_id"] = response.new_id;
-				s.save();
-				res.json(response).send();
+				req.identity.persist(response.new_id);
+				res.json(response).end();
 			}
 		});
 	} else {

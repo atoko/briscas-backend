@@ -3,7 +3,8 @@ import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import {
 	db,
-	session
+	session,
+	identity
 } from "./middleware"; //, auth, logging
 import {
 	game,
@@ -21,14 +22,16 @@ app.use(bodyParser.urlencoded({
 
 app.use(db());
 app.use(session());
-//app.use(identity());
+app.use(identity());
 
-app.get("/game/new", game.createNew);
-//app.get("/game/list");
-//app.get("/game/:id/self", self);
-//app.get("/game/:id/turn", requireIdentity, turn);
+app.post("/game", game.createNew);
+//app.get("/games");
+app.all("/game/:id/*", game.find);
+app.get("/game/:id/", game.self);
+app.post("/game/:id/", game.join);
+app.post("/game/:id/:card", game.play);
 
-app.get("/auth/anonymous", auth.anonymous);
+app.post("/auth/anonymous", auth.anonymous);
 app.post("/auth/login", auth.login);
 app.post("/auth/register", auth.register);
 

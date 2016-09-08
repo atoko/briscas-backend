@@ -16,7 +16,7 @@ exports.list_queryable = function(done){
 */
 exports.self_returns_game = function(done){
 	supertest(app.default)
-	.get("/game/new")
+	.post("/game/")
 	.expect(200)
 	.end(function(err, response){
 		assert.ok(!err);
@@ -24,7 +24,7 @@ exports.self_returns_game = function(done){
 		assert.ok(game.success);
 
 		supertest(app.default)
-		.get("/game/" + game.brisca_id + "/self")
+		.get("/game/" + game.id + "/")
 		.expect(200)
 		.end(function(err, response){
 			assert.ok(!err);
@@ -36,11 +36,12 @@ exports.self_returns_game = function(done){
 
 exports.new_returns_id = function(done){
 	supertest(app.default)
-	.get("/game/new")
+	.post("/game/")
 	.expect(200)
 	.end(function(err, response){
 		assert.ok(!err);
-		assert.ok(typeof response.text === "object");
+		let game = JSON.parse(response.text);
+		assert.ok(game.success);
 		return done();
 	});
 };

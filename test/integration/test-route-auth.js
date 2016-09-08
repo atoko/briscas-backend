@@ -4,11 +4,11 @@ var supertest = require("supertest")
 
 exports.anonymous_returns_token = function(done){
 	supertest(app.default)
-	.get("/auth/anonymous")
+	.post("/auth/anonymous")
 	.expect(200)
 	.end(function(err, response){
 		assert.ok(!err);
-		assert.ok(typeof response.text === "string");
+		assert.ok(typeof JSON.parse(response.text) === "object");
 		return done();
 	});
 };

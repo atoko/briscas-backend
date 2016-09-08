@@ -3,21 +3,17 @@ let anonymous = function(req, res, next) {
 
 	req.db.membership.register(anon, anon, anon, function(err, row) {
 		if (err) {
-			res.status(403).json(err);
-			res.send();
+			res.status(403).json(err).end();
 			return;
 		} else {
 			let response = row[0].register;
 			if (response.success === false) {
-				res.status(403).json(response);
+				res.status(403).json(response).end();
 				return;
 			}
 
-			let s = req.session;
-			s.data = s.data ? s.data : {};
-			s.data["player_id"] = response.new_id;
-			s.save();
-			res.json(response).send();
+			req.identity.persist(response.new_id);
+			res.json(response).end();
 		}
 	});
 };
