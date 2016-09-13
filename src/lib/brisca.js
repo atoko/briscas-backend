@@ -88,6 +88,9 @@ class BriscaGame {
 			this.play(this["players"][this["nextToPlay"]]["hand"][0]);
 		}		
 	}
+	nextToPlay(){
+		return this["players"][this.nextToPlay]["player_id"];
+	}
 	join(player_id) {
 		let playerAlreadyJoined = false;
 		if (playerAlreadyJoined || this.players.length == this.tableSize) {
@@ -176,7 +179,7 @@ class BriscaGame {
 	}
 
 	serialize() {
-		let players = this.players.map((p) => { return {player_id: p.player_id};});
+		let players = this.players.map((p) => { return p.player_id;});
 		return {
 			deck: this.deck,
 			players: players,
@@ -186,6 +189,7 @@ class BriscaGame {
 	}
 
 	static deserialize(blob) {
+		blob.players = blob.players.map((p) => { return {player_id: p};}); 
 		return new BriscaGame(blob.deck, blob.playSequence, blob.tableSize, blob.players);
 	}
 	static tableFor(n) {

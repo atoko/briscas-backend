@@ -4,8 +4,10 @@ let play = function(req, res, next) {
 	let reqCard = req.params.card;
 	let gameData = req.game.data;
 	let b = brisca.deserialize(gameData);
-	debugger;
-	b.play(reqCard);
+
+	if (b.nextToPlay() === req.identity.id()) {
+		b.play(reqCard);
+	}
 	if (JSON.stringify(b.serialize()) === JSON.stringify(gameData)) {
 		res.json(req.game).end();
 	} else {

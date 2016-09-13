@@ -10,5 +10,7 @@ CREATE TABLE "games" (
   modified timestamptz
 )
 WITH (OIDS=FALSE);
+
+CREATE INDEX games_modified ON "games" (modified);
 CREATE INDEX games_data_players ON "games" USING GIN((data -> 'players'));
 set search_path=public;
