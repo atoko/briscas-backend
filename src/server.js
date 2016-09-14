@@ -4,7 +4,8 @@ import bodyParser from "body-parser";
 import {
 	db,
 	session,
-	identity
+	identity,
+	cors
 } from "./middleware"; //, auth, logging
 import {
 	game,
@@ -20,6 +21,7 @@ app.use(bodyParser.urlencoded({
 	extended: false
 }));
 
+app.use(cors());
 app.use(db());
 app.use(session());
 app.use(identity());
