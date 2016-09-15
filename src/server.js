@@ -34,6 +34,7 @@ app.get("/game/:id/", game.self);
 app.post("/game/:id/", game.join);
 app.post("/game/:id/:card", game.play);
 
+app.get("/auth", auth.get);
 app.post("/auth/anonymous", auth.anonymous);
 app.post("/auth/login", auth.login);
 app.post("/auth/register", auth.register);
