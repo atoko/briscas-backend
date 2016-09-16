@@ -19,6 +19,11 @@ class Identity {
 		s.data["user_id"] = id;
 		s.save();		
 	}
+	forget() {
+		let s = this.req.session;
+		s.data = null;
+		s.save();
+	}
 }
 
 let inject = function() {

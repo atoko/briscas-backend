@@ -35,6 +35,7 @@ app.post("/game/:id/", identity.require, game.join);
 app.post("/game/:id/:card", identity.require, game.play);
 
 app.get("/auth", identity.require, auth.get);
+app.get("/auth/logout", auth.logout);
 app.post("/auth/anonymous", auth.anonymous);
 app.post("/auth/login", auth.login);
 app.post("/auth/register", auth.register);
