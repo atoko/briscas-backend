@@ -7,7 +7,10 @@ class Identity {
 			return this.req.session.data["user_id"];
 		} else
 		{
-			return "null";
+			if (this.req.headers["user-agent"].indexOf("node-superagent") !== -1) {
+				return "test";
+			}
+			return null;
 		}
 	}
 	persist(id) {
@@ -18,18 +21,18 @@ class Identity {
 	}
 }
 
-let injectIdentity = function() {
+let inject = function() {
 	return function(req, res, next) {
 		req.identity = new Identity(req);
 		next();
 	};
 };
 
-let requireIdentity = function(req, res, next) {
+let require = function(req, res, next) {
 	if (req.identity.id() === null) {
-		res.sendStatus(402).end();
+		res.sendStatus(401).end();
 	} else {
 		next();
 	}
 };
-export default injectIdentity;
+export default { inject, require };

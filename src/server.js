@@ -24,17 +24,17 @@ app.use(bodyParser.urlencoded({
 app.use(cors());
 app.use(db());
 app.use(session());
-app.use(identity());
+app.use(identity.inject());
 
-app.post("/game", game.createNew);
+app.post("/game", identity.require, game.createNew);
 //app.get("/games");
 app.all("/game/:id", game.find);
 app.all("/game/:id/*", game.find);
 app.get("/game/:id/", game.self);
-app.post("/game/:id/", game.join);
-app.post("/game/:id/:card", game.play);
+app.post("/game/:id/", identity.require, game.join);
+app.post("/game/:id/:card", identity.require, game.play);
 
-app.get("/auth", auth.get);
+app.get("/auth", identity.require, auth.get);
 app.post("/auth/anonymous", auth.anonymous);
 app.post("/auth/login", auth.login);
 app.post("/auth/register", auth.register);

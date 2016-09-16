@@ -45,3 +45,24 @@ exports.new_returns_id = function(done){
 		return done();
 	});
 };
+
+exports.can_join_game = function(done){
+	supertest(app.default)
+	.post("/game/")
+	.expect(200)
+	.end(function(err, response){
+		assert.ok(!err);
+		var game = JSON.parse(response.text);
+		assert.ok(game.success);
+
+		supertest(app.default)
+		.post("/game/" + game.id + "/")
+		.expect(200)
+		.end(function(err, response){
+			assert.ok(!err);
+			assert.ok(typeof JSON.parse(response.text) === "object");
+
+			return done();
+		});	
+	});
+};
