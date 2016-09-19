@@ -1,4 +1,5 @@
 import express from "express";
+import compression from "compression";
 import path from "path";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
@@ -22,6 +23,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
 	extended: false
 }));
+app.use(compression());
 
 app.use(cors());
 app.use(db());
@@ -42,6 +44,10 @@ app.post("/auth/anonymous", auth.anonymous);
 app.post("/auth/login", auth.facebook);
 app.post("/auth/login", auth.login);
 app.post("/auth/register", auth.register);
+
+app.all("*", (req, res) => {
+	res.sendFile(path.join(__dirname, "..", "assets", "index.html"));
+});
 
 app.listen(app.get("port"), function() {
 	console.log("briscas-backend running at port:" + app.get("port"));
