@@ -9,7 +9,8 @@
     "test": "node_modules/.bin/mocha -u exports test/**/*",
     "database": "node db/deploy.js",
     "build": "node_modules/.bin/babel src/ -d es5 -s",
-    "dev": "node_modules/.bin/babel src/ -d es5 -s -w"
+    "dev": "node_modules/.bin/babel src/ -d es5 -s -w",
+    "postinstall": "npm run build"
   },
   "keywords": [],
   "author": "atoko",
