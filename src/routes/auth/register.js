@@ -15,7 +15,7 @@ let register = function(req, res, next) {
 		req.db.membership.register(username, password, confirm, function(err, row) {
 			if (err) {
 				res.status(403).json(err);
-				res.end();
+				res.flush();
 				return;
 			} else {
 				let response = row[0].register;
@@ -25,7 +25,7 @@ let register = function(req, res, next) {
 				}
 
 				req.identity.persist(response.new_id);
-				res.json(response).end();
+				res.json(response).flush();
 			}
 		});
 	} else {

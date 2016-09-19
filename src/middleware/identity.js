@@ -35,7 +35,7 @@ let inject = function() {
 
 let require = function(req, res, next) {
 	if (req.identity.id() === null) {
-		res.sendStatus(401).end();
+		res.sendStatus(401).flush();
 	} else {
 		next();
 	}

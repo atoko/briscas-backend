@@ -11,7 +11,7 @@ let get = function(req, res, next) {
 			res.sendStatus(400);
 			return;
 		}
-		res.json(row).end();
+		res.json(row).flush();
 	});
 };
 export default get;
