@@ -9,7 +9,7 @@ let play = function(req, res, next) {
 		b.play(reqCard);
 	}
 	if (JSON.stringify(b.serialize()) === JSON.stringify(gameData)) {
-		res.json(req.game).end();
+		res.json(req.game).flush();
 	} else {
 		req.game.data = b.serialize();
 		req.db.brisca.games.save(req.game, function(err, row) {
@@ -17,7 +17,7 @@ let play = function(req, res, next) {
 				res.sendStatus(503);
 				return;
 			}
-			res.json(row).end();
+			res.json(row).flush();
 		});
 	}
 };

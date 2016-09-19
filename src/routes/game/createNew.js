@@ -9,7 +9,7 @@ let createNew = function(req, res, next) {
 		res.json({
 			success: true,
 			id: row.id	
-		}).end();
+		}).flush();
 	});
 };
 export default createNew;
