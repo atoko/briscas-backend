@@ -17,13 +17,13 @@ import {
 var app = express();
 app.set("port", (process.env.PORT || 5000));
 
+app.use(compression());
 app.use(express.static(path.join(__dirname, "..", "assets")));
 app.use(cookieParser("lembas"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
 	extended: false
 }));
-app.use(compression());
 
 app.use(cors());
 app.use(db());
