@@ -1,4 +1,5 @@
 import express from "express";
+import path from "path";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import {
@@ -15,6 +16,7 @@ import {
 var app = express();
 app.set("port", (process.env.PORT || 5000));
 
+app.use(express.static(path.join(__dirname, "..", "assets")));
 app.use(cookieParser("lembas"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
