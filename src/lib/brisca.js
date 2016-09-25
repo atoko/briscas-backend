@@ -4,7 +4,7 @@ import {
 } from "./deckUtil";
 class BriscaEngine {
 	constructor(deck) {
-		this.life = this.determineSuit(deck[deck.length - 1]);
+		this.life = this.determineSuit(deck[0]);
 		this.pointMapping = {
 			0: 11,
 			2: 10,
@@ -31,8 +31,8 @@ class BriscaEngine {
 	determineWinner(cardA, cardB) {
 		var winner = cardA;
 		if (
-			(!this.determineLife(cardA) && this.determineLife(cardB)) 
-			|| (this.determineSuit(cardB) == this.determineSuit(cardA))
+			(!this.determineLife(cardA) && this.determineLife(cardB)) ||
+			(this.determineSuit(cardB) === this.determineSuit(cardA))
 		) {
 			//If cardB is Life but cardA isn't winner = cardB;
 			//If both points = 0, then highest face wins;
@@ -51,7 +51,7 @@ class BriscaEngine {
 		return winner;
 	}
 	determineLife(card) {
-		return this.determineSuit(card) == this["life"];
+		return this.determineSuit(card) === this["life"];
 	}
 	determineSuit(card) {
 		return Math.floor(card / 10);
@@ -73,6 +73,7 @@ class BriscaGame {
 		this.tableSize = tableSize;
 		this.players = [];
 		this.dropCards = [];
+		this.lastPlay = [];
 		this.lastWinner = 0;
 		this.nextToDraw = 0;
 		this.nextToPlay = 0;
@@ -86,9 +87,9 @@ class BriscaGame {
 	ai() {
 		if (this["players"][this["nextToPlay"]]["player_id"] === "bot") {
 			this.play(this["players"][this["nextToPlay"]]["hand"][0]);
-		}		
+		}
 	}
-	nextToPlay(){
+	nextPlayerId() {
 		return this["players"][this.nextToPlay]["player_id"];
 	}
 	join(player_id) {
@@ -103,7 +104,8 @@ class BriscaGame {
 		this["players"].push({
 			hand: [],
 			grave: [],
-			player_id			
+			points: 0,
+			player_id
 		});
 
 		if (this.players.length === this.tableSize) {
@@ -116,7 +118,7 @@ class BriscaGame {
 			for (var play = 0, length = sequence.length; play < length; play++) {
 				this.play(sequence[play], true);
 			}
-			
+
 			this.ai();
 		}
 
@@ -153,7 +155,7 @@ class BriscaGame {
 		}
 
 		return this;
-	}	
+	}
 	turn(historic = false) {
 		let players = this["players"].length;
 
@@ -167,19 +169,22 @@ class BriscaGame {
 				this["players"][winner]["grave"].push(this["dropCards"][card]);
 				this["players"][winner]["points"] = this.engine.totalPoints(this["players"][winner]["grave"]);
 			}
+			debugger;
+			this["lastPlay"] = this["dropCards"].splice(0);
 			this["dropCards"] = [];
 
 			this["nextToDraw"] = winner;
 			this["nextToPlay"] = winner;
 			this.deal();
-		}
-		else if (!historic && this["players"][this["nextToPlay"]]["player_id"] === "bot") {
+		} else if (!historic && this["players"][this["nextToPlay"]]["player_id"] === "bot") {
 			this.play(this["players"][this["nextToPlay"]]["hand"][0]);
-		}	
+		}
 	}
 
 	serialize() {
-		let players = this.players.map((p) => { return p.player_id;});
+		let players = this.players.map((p) => {
+			return p.player_id;
+		});
 		return {
 			deck: this.deck,
 			players: players,
@@ -189,7 +194,11 @@ class BriscaGame {
 	}
 
 	static deserialize(blob) {
-		blob.players = blob.players.map((p) => { return {player_id: p};}); 
+		blob.players = blob.players.map((p) => {
+			return {
+				player_id: p
+			};
+		});
 		return new BriscaGame(blob.deck, blob.playSequence, blob.tableSize, blob.players);
 	}
 	static tableFor(n) {

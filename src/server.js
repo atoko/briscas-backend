@@ -1,4 +1,5 @@
 import express from "express";
+import http from "http";
 import compression from "compression";
 import path from "path";
 import cookieParser from "cookie-parser";
@@ -13,8 +14,20 @@ import {
 	game,
 	auth
 } from "./routes"; //, turn, self
+import socketIO from "socket.io";
 
-var app = express();
+const app = express();
+const server = http.Server(app);
+const appSockets = socketIO(server);
+appSockets.on('connection', function(socket) {
+	console.log("connected");  
+	socket.on('chat message', function(msg){
+    	console.log('message: ' + msg);
+  	});
+  socket.on('disconnect', function(){
+    console.log('user disconnected');
+  });	  
+});
 app.set("port", (process.env.PORT || 5000));
 
 app.use(compression());
@@ -49,7 +62,7 @@ app.all("*", (req, res) => {
 	res.sendFile(path.join(__dirname, "..", "assets", "index.html"));
 });
 
-app.listen(app.get("port"), function() {
+server.listen(app.get("port"), function() {
 	console.log("briscas-backend running at port:" + app.get("port"));
 });
 export default app;
