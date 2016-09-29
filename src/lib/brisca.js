@@ -169,7 +169,7 @@ class BriscaGame {
 				this["players"][winner]["grave"].push(this["dropCards"][card]);
 				this["players"][winner]["points"] = this.engine.totalPoints(this["players"][winner]["grave"]);
 			}
-			debugger;
+			
 			this["lastPlay"] = this["dropCards"].splice(0);
 			this["dropCards"] = [];
 

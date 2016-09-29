@@ -14,20 +14,13 @@ import {
 	game,
 	auth
 } from "./routes"; //, turn, self
-import socketIO from "socket.io";
-
+import installSocketServer from "./socketServer";
+ 
 const app = express();
 const server = http.Server(app);
-const appSockets = socketIO(server);
-appSockets.on('connection', function(socket) {
-	console.log("connected");  
-	socket.on('chat message', function(msg){
-    	console.log('message: ' + msg);
-  	});
-  socket.on('disconnect', function(){
-    console.log('user disconnected');
-  });	  
-});
+
+installSocketServer(server);
+
 app.set("port", (process.env.PORT || 5000));
 
 app.use(compression());

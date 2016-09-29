@@ -1,19 +1,13 @@
-let find = function(req, res, next) {
-	let id = new Number(req.params.id).valueOf();
-	req.db.briscas.get(id, (err, row) => {
-		if (err) {
-			res.sendStatus(503);
-			return;
-		}
-		if (row.length == 0) {
-			res.sendStatus(400);
+let fromDatabase = (db, id, playerId, callback) => {
+	db.briscas.get(id, (err, row) => {
+		if (err || row.length == 0) {
 			return;
 		}
 		let briscas = row[0];
 		let currentTeam = -1;
 		for (var index = 0; index < briscas.data.players.length; index++) {
 			var player_id = briscas.data.players[index];
-			if (player_id === req.identity.id()) {
+			if (player_id === playerId) {
 				currentTeam = (index) % briscas.data.tableSize;
 			}
 		}
@@ -35,8 +29,24 @@ let find = function(req, res, next) {
 			return pd;
 		});
 
-		req.game = briscas;
+		callback(briscas);
+	});
+};
+
+let find = function(req, res, next) {
+	let gameForDb = () =>
+	{
+		let game = {...req.game };
+		game.player_data = null;
+		delete game.player_data;
+
+		return game;		
+	}
+	let id = new Number(req.params.id).valueOf();
+	fromDatabase(req.db, id, req.identity.id(), (game) => {
+		req.game = game;
+		req.gameForDb = gameForDb;
 		next();
 	});
 };
-export default find;
+export { find, fromDatabase };
