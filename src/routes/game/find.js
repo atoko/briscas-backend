@@ -1,9 +1,9 @@
 let fromDatabase = (db, id, playerId, callback) => {
-	db.briscas.get(id, (err, row) => {
-		if (err || row.length == 0) {
+	db.brisca.vw_games.findOne(id, (err, row) => {
+		if (err) {
 			return;
 		}
-		let briscas = row[0];
+		let briscas = row;
 		let currentTeam = -1;
 		for (var index = 0; index < briscas.data.players.length; index++) {
 			var player_id = briscas.data.players[index];

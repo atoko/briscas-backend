@@ -1,3 +1,4 @@
 import game from "./game";
 import auth from "./auth";
-export { game, auth };
+import briscas from "./briscas";
+export { game, auth, briscas };

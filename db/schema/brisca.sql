@@ -22,9 +22,17 @@ $$BEGIN
 	RETURN NEW;
 END$$ LANGUAGE 'plpgsql';
 
-
 CREATE TRIGGER game_modified BEFORE UPDATE ON brisca.games 
 FOR EACH ROW
 EXECUTE PROCEDURE brisca.update_modified();
+
+CREATE VIEW vw_games AS
+SELECT g.id, g.data, json_agg(m) as player_data
+FROM brisca.games g
+LEFT JOIN (
+	SELECT id::text as player_id,
+		first as name
+    FROM membership.members) m ON g.data -> 'players' ? m.player_id
+GROUP BY g.id;
 
 set search_path=public;
