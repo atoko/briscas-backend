@@ -18,11 +18,9 @@ import installSocketServer from "./socketServer";
  
 const app = express();
 const server = http.Server(app);
-
-installSocketServer(server);
+const socketMiddleware = installSocketServer(server);
 
 app.set("port", (process.env.PORT || 5000));
-
 app.use(compression());
 app.use(express.static(path.join(__dirname, "..", "assets")));
 app.use(cookieParser("lembas"));
@@ -31,6 +29,7 @@ app.use(bodyParser.urlencoded({
 	extended: false
 }));
 
+app.use(socketMiddleware);
 app.use(cors());
 app.use(db());
 app.use(session());
