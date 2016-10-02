@@ -1,4 +1,4 @@
-SELECT g.id, g.data,  json_agg(m) as player_data
+SELECT g.id, g.data, json_agg(m) as player_data
 FROM brisca.games g
 LEFT JOIN (
 	SELECT id::text as player_id,

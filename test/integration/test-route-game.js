@@ -17,6 +17,7 @@ exports.list_queryable = function(done){
 exports.self_returns_game = function(done){
 	supertest(app.default)
 	.post("/game/")
+	.send({roomType:"public"})
 	.expect(200)
 	.end(function(err, response){
 		assert.ok(!err);
