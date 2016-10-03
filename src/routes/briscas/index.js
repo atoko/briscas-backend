@@ -1,3 +1,4 @@
 import active from "./active";
+import join from "./join";
 
-export default { active };
+export default { active, join };

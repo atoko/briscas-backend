@@ -1,7 +1,11 @@
 let find = function(req, res, next) {
-	//res.json(Object.keys(req.briscaSockets)).flush();
-	req.db.brisca.vw_games.where("1 = 1", null, (err, rows) => {
-		res.json(rows).flush();	
-	});
+	const gameIds = Object.keys(req.briscaSockets);
+	if (gameIds.length > 0) {
+		req.db.brisca.vw_games.find({id : gameIds}, (err, rows) => {		
+			res.json(rows).flush();	
+		});
+	} else {
+		res.json([]).flush();		
+	}
 };
 export default find;

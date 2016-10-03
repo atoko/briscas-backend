@@ -1,5 +1,5 @@
 let fromDatabase = (db, id, playerId, callback) => {
-	db.brisca.vw_games.findOne(id, (err, row) => {
+	db.brisca.vw_games.findOne({id}, (err, row) => {
 		if (err) {
 			return;
 		}
@@ -42,11 +42,17 @@ let find = function(req, res, next) {
 
 		return game;		
 	}
+
 	let id = new Number(req.params.id).valueOf();
 	fromDatabase(req.db, id, req.identity.id(), (game) => {
 		req.game = game;
 		req.gameForDb = gameForDb;
-		next();
+		if (next.length > 1) {
+			next(req, res);
+		}
+		else {
+			next();
+		}
 	});
 };
 export { find, fromDatabase };

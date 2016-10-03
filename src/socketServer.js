@@ -24,11 +24,13 @@ export default function(server) {
 		});
 		socket.on("disconnect", function () {
 			const briscaId = socket.briscaId;
-			let gameSockets = briscaSockets[briscaId];
-			gameSockets.splice(gameSockets.indexOf(socket), 1);
-			if (gameSockets.length <= 0) {
-				briscaSockets[briscaId] = null;
-				delete briscaSockets[briscaId];
+			if (briscaId) {
+				let gameSockets = briscaSockets[briscaId];
+				gameSockets.splice(gameSockets.indexOf(socket), 1);
+				if (gameSockets.length <= 0) {
+					briscaSockets[briscaId] = null;
+					delete briscaSockets[briscaId];
+				}
 			}
 			socket.leave(socket.room);
 		});

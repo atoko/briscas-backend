@@ -23,7 +23,6 @@ exports.self_returns_game = function(done){
 		assert.ok(!err);
 		var game = JSON.parse(response.text);
 		assert.ok(game.success);
-
 		supertest(app.default)
 		.get("/game/" + game.id + "/")
 		.expect(200)
