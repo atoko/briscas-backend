@@ -19,7 +19,7 @@ var registry = function() {
 		console.log("Deploying database " + database);
 		return function (err) {
 			if (err !== null) {
-				console.log(err);
+				console.log(JSON.stringify(err));
 				process.exit(1);
 			} else {
 				console.log("Database " + database + " deployed.");
@@ -34,15 +34,21 @@ var registry = function() {
 }();
 
 massive.connect({connectionString : database.connection_string}, function(err, db) {
-	if (typeof db.membership === "undefined") {
-		db.schema.membership(registry("membership"));
-	}
+	let deployBrisca = (callback) => {
+		if (typeof db.brisca === "undefined") {
+			db.schema.brisca(callback);
+		}
+	};
 	if (typeof db.session === "undefined") {
 		db.schema.session(registry("session"));
 	}
-	if (typeof db.brisca === "undefined") {
-		db.schema.brisca(registry("brisca"));
-	}
+	if (typeof db.membership === "undefined") {
+		let membership = registry("membership");
+		let brisca = registry("brisca");
+		db.schema.membership(() => { membership(); deployBrisca(brisca);});
+	} else {
+		deployBrisca(registry("brisca"));	
+	}	
 	registry(null);
 });
 //version migrations?
