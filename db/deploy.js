@@ -34,7 +34,7 @@ var registry = function() {
 }();
 
 massive.connect({connectionString : database.connection_string}, function(err, db) {
-	let deployBrisca = (callback) => {
+	var deployBrisca = (callback) => {
 		if (typeof db.brisca === "undefined") {
 			db.schema.brisca(callback);
 		}
@@ -43,8 +43,8 @@ massive.connect({connectionString : database.connection_string}, function(err, d
 		db.schema.session(registry("session"));
 	}
 	if (typeof db.membership === "undefined") {
-		let membership = registry("membership");
-		let brisca = registry("brisca");
+		var membership = registry("membership");
+		var brisca = registry("brisca");
 		db.schema.membership(() => { membership(); deployBrisca(brisca);});
 	} else {
 		deployBrisca(registry("brisca"));	
