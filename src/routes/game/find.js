@@ -35,15 +35,6 @@ let fromDatabase = (db, id, playerId, callback) => {
 };
 
 let find = function(req, res, next) {
-	let gameForDb = () =>
-	{
-		let game = {...req.game };
-		game.player_data = null;
-		delete game.player_data;
-
-		return game;		
-	}
-
 	let id = new Number(req.params.id).valueOf();
 	fromDatabase(req.db, id, req.identity.id(), (game) => {
 		if (game == null) {
@@ -52,7 +43,6 @@ let find = function(req, res, next) {
 		}
 
 		req.game = game;
-		req.gameForDb = gameForDb;
 		if (next.length > 1) {
 			next(req, res);
 		}

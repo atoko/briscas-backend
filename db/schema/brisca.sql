@@ -6,7 +6,7 @@ set search_path=brisca;
 CREATE TABLE "games" (
   id serial primary key,
   data jsonb not null,
-  access text,
+  access text default 'public',
   created_at timestamptz default now(),
   modified timestamptz
 )

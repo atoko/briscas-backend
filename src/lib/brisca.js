@@ -201,6 +201,13 @@ class BriscaGame {
 		});
 		return new BriscaGame(blob.deck, blob.playSequence, blob.tableSize, blob.players);
 	}
+	static toDb(game) {
+		let g = {...game };
+		g.player_data = null;
+		delete g.player_data;
+
+		return g;			
+	}
 	static tableFor(n) {
 		let deck = shuffle(range(40));
 		return new BriscaGame(deck, [], n, []);
