@@ -7,7 +7,7 @@ let login = function(req, res, next) {
 			password
 		} = login;
 		if (username === undefined || password === undefined) {
-			res.sendStatus(400);
+			res.status(400).flush();
 			return;
 		}
 

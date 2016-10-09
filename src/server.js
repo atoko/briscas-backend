@@ -9,12 +9,12 @@ import {
 	session,
 	identity,
 	cors
-} from "./middleware"; //, auth, logging
+} from "./middleware";
 import {
 	game,
 	briscas,
 	auth
-} from "./routes"; //, turn, self
+} from "./routes";
 import installSocketServer from "./socketServer";
  
 const app = express();
@@ -45,6 +45,7 @@ app.post("/game/:id/:card", identity.require, game.play);
 
 app.get("/briscas/active", briscas.active);
 app.get("/briscas/member", identity.require, briscas.member.read);
+app.post("/briscas/member", identity.require, briscas.member.update);
 app.post("/briscas/join", briscas.join);
 
 app.get("/auth", identity.require, auth.get);
