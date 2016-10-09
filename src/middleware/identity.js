@@ -7,7 +7,7 @@ class Identity {
 			return this.req.session.data["user_id"];
 		} else
 		{
-			if (this.req.headers["user-agent"].indexOf("node-superagent") !== -1) {
+			if (this.req.headers["user-agent"] && this.req.headers["user-agent"].indexOf("node-superagent") !== -1) {
 				return "test";
 			}
 			return null;

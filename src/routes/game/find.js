@@ -12,16 +12,27 @@ let fromDatabase = (db, id, playerId, callback) => {
 				currentTeam = (index) % briscas.data.tableSize;
 			}
 		}
+
+		const publicDefault = {
+			deckAsset: "1993"
+		};		
 		briscas.player_data = briscas.data.players.map( (p, i) => {
 			let pd = {
 				player_id: "bot",
-				name: "Bot"
+				name: "_Bot_",
+				public: publicDefault
 			};
 
 			if (briscas.player_data[i]) {
 				pd = briscas.player_data[i];
 				if (pd.name === null) {
 					pd.name = "_Anonymous_";
+				}
+				if (pd.public === null) {
+					pd.public = publicDefault;
+				}
+				if (pd.private) {
+					delete pd.private;
 				}
 			}
 			pd.team = (i) % briscas.data.tableSize;

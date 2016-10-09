@@ -44,6 +44,7 @@ app.post("/game/:id/", identity.require, game.join);
 app.post("/game/:id/:card", identity.require, game.play);
 
 app.get("/briscas/active", briscas.active);
+app.get("/briscas/member", identity.require, briscas.member.read);
 app.post("/briscas/join", briscas.join);
 
 app.get("/auth", identity.require, auth.get);

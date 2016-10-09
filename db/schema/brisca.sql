@@ -1,9 +1,16 @@
-drop schema if exists brisca CASCADE;
-create schema brisca;
+DROP SCHEMA IF EXISTS brisca CASCADE;
+CREATE SCHEMA brisca;
 
-set search_path=brisca;
+SET search_path = brisca;
 
-CREATE TABLE "games" (
+CREATE FUNCTION brisca."update_modified"()
+RETURNS trigger AS 
+  $$BEGIN
+    NEW.modified = now();
+    RETURN NEW;
+  END$$ LANGUAGE 'plpgsql';
+
+CREATE TABLE brisca."games" (
   id serial primary key,
   data jsonb not null,
   access text default 'public',
@@ -11,28 +18,30 @@ CREATE TABLE "games" (
   modified timestamptz
 )
 WITH (OIDS=FALSE);
-
 CREATE INDEX games_modified ON "games" (modified);
 CREATE INDEX games_data_players ON "games" USING GIN((data -> 'players'));
-
-CREATE FUNCTION brisca.update_modified()
-RETURNS trigger AS 
-$$BEGIN
-	NEW.modified = now();
-	RETURN NEW;
-END$$ LANGUAGE 'plpgsql';
-
 CREATE TRIGGER game_modified BEFORE UPDATE ON brisca.games 
 FOR EACH ROW
-EXECUTE PROCEDURE brisca.update_modified();
+  EXECUTE PROCEDURE brisca.update_modified();
 
-CREATE VIEW vw_games AS
+CREATE TABLE brisca."members" (
+  member_id bigint primary key,
+  public jsonb not null,
+  created_at timestamptz default now(),
+  modified timestamptz
+)
+WITH (OIDS=FALSE);
+
+CREATE VIEW brisca."vw_games" AS
 SELECT g.id, g.data, json_agg(m) as player_data
 FROM brisca.games g
 LEFT JOIN (
-	SELECT id::text as player_id,
-		first as name
-    FROM membership.members) m ON g.data -> 'players' ? m.player_id
+  SELECT m.id::text as player_id,
+    m.first as name,
+    md.public
+    FROM membership.members m
+    LEFT JOIN brisca.members md ON m.id = md.member_id
+) m ON g.data -> 'players' ? m.player_id
 GROUP BY g.id;
 
-set search_path=public;
+SET search_path = public;
