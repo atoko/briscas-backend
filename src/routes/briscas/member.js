@@ -3,7 +3,7 @@ let read = function(req, res, next) {
 	let options = {
 		columns:[
 			"member_id",
-			"public"
+			"public_data"
 		]
 	};
 	req.db.brisca.members.findOne({member_id: id}, options, (err, row) => {
@@ -17,7 +17,7 @@ let read = function(req, res, next) {
 		} else {
 			req.db.brisca.members.insert({
 				member_id: id,
-				public: {}
+				public_data: {}
 			}, (err, row) => {
 				if (err) {
 					res.status(400).json(err).flush();
@@ -29,9 +29,10 @@ let read = function(req, res, next) {
 	});
 };
 let update = function(req, res) {
-	let member = req.body;
+	let member = req.body,
+		member_id = req.identity.id(); //always use id from sessionStore
 
-	req.db.brisca.members.save(member, (err, row) => {
+	req.db.brisca.members.save({ ...member, member_id}, (err, row) => {
 		if (err) {
 			res.status(400).json(err).flush();
 			return;

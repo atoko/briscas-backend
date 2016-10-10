@@ -26,7 +26,7 @@ FOR EACH ROW
 
 CREATE TABLE brisca."members" (
   member_id bigint primary key,
-  public jsonb not null,
+  public_data jsonb not null,
   created_at timestamptz default now(),
   modified timestamptz
 )
@@ -38,7 +38,7 @@ FROM brisca.games g
 LEFT JOIN (
   SELECT m.id::text as player_id,
     m.first as name,
-    md.public
+    md.public_data
     FROM membership.members m
     LEFT JOIN brisca.members md ON m.id = md.member_id
 ) m ON g.data -> 'players' ? m.player_id

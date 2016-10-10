@@ -14,7 +14,7 @@ let fromDatabase = (db, id, playerId, callback) => {
 		}
 
 		const publicDefault = {
-			deckAsset: "1993"
+			deck: "1993"
 		};		
 		briscas.player_data = briscas.data.players.map( (p, i) => {
 			let pd = {
