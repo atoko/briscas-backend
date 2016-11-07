@@ -11,6 +11,9 @@ let play = function(req, res, next) {
 		res.json(req.game).flush();
 	} else {
 		req.game.data = b.serialize();
+
+ +		req.game.player_data = null;
+ +		delete req.game.player_data;		
 		req.db.brisca.games.save(req.game, function(err, row) {
 			if (err) {
 				res.sendStatus(503);
