@@ -10,7 +10,7 @@ class Identity {
 			if (this.req.headers["user-agent"].indexOf("node-superagent") !== -1) {
 				return "test";
 			}
-			return null;
+			return Math.floor(Math.random() * 3405691582);
 		}
 	}
 	persist(id) {

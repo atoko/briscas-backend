@@ -43,13 +43,13 @@ app.use(db());
 app.use(session());
 app.use(identity.inject());
 
-app.post("/game", identity.require, game.createNew);
+app.post("/game", game.createNew);
 //app.get("/games");
 app.all("/game/:id", game.find);
 app.all("/game/:id/*", game.find);
 app.get("/game/:id/", game.self);
-app.post("/game/:id/", identity.require, game.join);
-app.post("/game/:id/:card", identity.require, game.play);
+app.post("/game/:id/", game.join);
+app.post("/game/:id/:card", game.play);
 
 app.get("/auth", identity.require, auth.get);
 app.get("/auth/logout", auth.logout);
