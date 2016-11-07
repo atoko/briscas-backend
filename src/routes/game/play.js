@@ -1,7 +1,6 @@
 import brisca from "../../lib/brisca";
 
 let play = function(req, res, next) {
-	debugger;
 	let reqCard = req.params.card;
 	let gameData = req.game.data;
 	let b = brisca.deserialize(gameData);
